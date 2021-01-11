@@ -7,6 +7,8 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 
 public class TestPlan{
 
@@ -40,7 +42,7 @@ public class TestPlan{
     @Test(priority = 2)
     public void popUp() throws InterruptedException {
         Thread.sleep(2000);
-        try { driver.findElement(By.xpath("//*[@id=\"adddialog2\"]/*")).click();}
+        try { driver.findElement(By.xpath("//*[@id=\"adddialog2\"]/div")).click();}
         catch (NoSuchElementException e){
             System.out.println("Web Element Is Not Found");
         }
@@ -137,18 +139,23 @@ public class TestPlan{
             String[] eventName = new String[10];
             String[] eventDate = new String[10];
             String[] eventStatus = new String[10];
+
+            //get div number of the result page
+            List<WebElement> elements = driver.findElements(By.xpath("//*[@id=\"all_result\"]/*[contains(@class, 'result_render')]/div"));
+
             try {
-                //Variables
                 WebElement ename;
                 WebElement edate;
                 WebElement estatus;
-                for(int i=1; i<=10; i++){
+                for(int i=1; i<=elements.size(); i++){
                     ename = driver.findElement(By.xpath("//*[@id=\"all_result\"]/*[contains (@class, 'result_render')]/div["+i+"]/div/div[3]/div[2]/a"));
                     String tempName = ename.getText();
                     eventName[i-1]=tempName;
+
                     estatus= driver.findElement(By.xpath("//*[@id=\"all_result\"]/*[contains (@class, 'result_render')]/div["+i+"]/div/div[3]/div[2]/span"));
                     String tempStatus= estatus.getText();
                     eventStatus[i-1]=tempStatus;
+
                     edate= driver.findElement(By.xpath("//*[@id=\"all_result\"]/*[contains (@class, 'result_render')]/div["+i+"]/div/*[contains (@class, 'grid_3 alpha fld3 col-xs-12 searchResultInfo3 hiddenOnMobile')]/div/span"));
                     String tempDate= edate.getText();
                     eventDate[i-1]=tempDate;
